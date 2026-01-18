@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e4bfa70875df164996988d9757fc13c, type: 3}
   m_Name: PropertyChangerEnventSo
   m_EditorClassIdentifier: Assembly-CSharp::PropertyChangerEnventSo
+  _UIPopup: {fileID: 3823544010657667806, guid: 95e109ceacbf89d4ca40f4e1b3a7a64f, type: 3}
+  _popupDuration: 7
   _propertyType: 0
-  _changeAmount: 0
+  _changeAmount: 2
+  _randomProperty: 1

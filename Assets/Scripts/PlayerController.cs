@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
         get => _stores;
         set
         {
-            _stores = value;
+            _stores = Mathf.Clamp(value,0,int.MaxValue);
             _storesText.text = _stores.ToString();
         }
     }
@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
         get => _factories;
         set
         {
-            _factories = value;
+            _factories = Mathf.Clamp(value,0,int.MaxValue);;
             _factoriesText.text = _factories.ToString();
         }
     }
@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
         get => _hotels;
         set
         {
-            _hotels = value;
+            _hotels = Mathf.Clamp(value,0,int.MaxValue);;
             _hotelsText.text = _hotels.ToString();
         }
     }
@@ -196,6 +196,35 @@ public class PlayerController : MonoBehaviour
 
     [SerializedDictionary("Field", "Event")] [SerializeField]
     private SerializedDictionary<int,List<FieldEventSO>> _fieldEvents;
+    
+    [Header("Add")] 
+    [SerializeField] private PropertyType _propertyType;
+    [SerializeField] private int _amount;
+
+    [Button]
+    public void AddProperty()
+    {
+        switch (_propertyType)
+        {
+            case PropertyType.Stores:
+                Stores += _amount;
+                break;
+            case PropertyType.Factories:
+                Factories += _amount;
+                break;
+            case PropertyType.Hotels:
+                Hotels += _amount;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    [Button]
+    public void AddMoney()
+    {
+        Money += _amount;
+    }
 
     private void Awake()
     {
@@ -221,20 +250,6 @@ public class PlayerController : MonoBehaviour
     
     private void GlobalEvent()
     {
-        /*if(!_politicalParty)
-            _priceMultiplier += 0.25f;
-
-        switch (_turn)
-        {
-            case 50:
-                _money = 0;
-                _moneyText.text = _money.ToString();
-                break;
-            case 75:
-                Reset();
-                break;
-        }*/
-
         if (!_fieldEvents.TryGetValue(_turn, out var events)) return;
         
         foreach (var eventSo in events)
@@ -308,41 +323,55 @@ public class PlayerController : MonoBehaviour
 
     public void TryBribe()
     {
-        if(!TryBuy(_bribePrice) || Bribe)
-            return;
-        
-        if(Random.Range(0f,1f) > 0.1f)
+        if(Bribe || !TryBuy(_bribePrice))
             return;
 
+        if (Random.Range(0f, 1f) > 0.5f)
+        {
+            if (_hotels > 0)
+            {
+                Hotels--;
+            }
+            if (_factories > 0)
+            {
+                Factories--;
+            }
+            if (_stores > 0)
+            {
+                Stores--;
+            }
+            return;
+        }
         _incomeMultiplier += _bribeIncomeRaise;
         Bribe = true;
-        _bribeText.text = "V";
+        _bribeText.text = "Success";
     }
 
     public void BuyPoliticalParty()
     {
-        if(!TryBuy(_politicalPartyPrice) || PoliticalParty)
+        if(PoliticalParty || !TryBuy(_politicalPartyPrice))
             return;
 
         _priceMultiplier = 1;
         PoliticalParty = true;
-        _politicalPartyText.text = "V";
+        _politicalPartyText.text = "Bought";
         
-        DicePrice = DicePrice;
-        StorePrice = StorePrice;
-        FactoryPrice = FactoryPrice;
-        Hotels = Hotels;
-        ResetPrice = ResetPrice;
-        BribePrice = BribePrice;
-        PoliticalPartyPrice = PoliticalPartyPrice;
+        DicePrice = Mathf.RoundToInt(_baseDicePrice * 0.75f);
+        StorePrice = Mathf.RoundToInt(_baseStorePrice* 0.75f);
+        FactoryPrice = Mathf.RoundToInt(_baseFactoryPrice* 0.75f);
+        HotelPrice = Mathf.RoundToInt(_baseHotelPrice* 0.75f);
+        ResetPrice = Mathf.RoundToInt(_baseResetPrice* 0.75f);
+        BribePrice = Mathf.RoundToInt(_baseBribePrice* 0.75f);
+        PoliticalPartyPrice = Mathf.RoundToInt(_basePoliticalPartyPrice* 0.75f);
     }
 
     public void BuyReset()
     {
-        if(!TryBuy(_resetPrice) || _resetUsed)
+        if(_resetUsed || !TryBuy(_resetPrice))
             return;
 
         _resetUsed = true;
+        _resetPriceText.text = "USED";
         Reset();
         OtherPlayer.Reset();
     }

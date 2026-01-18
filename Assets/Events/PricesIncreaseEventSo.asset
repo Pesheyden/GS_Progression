@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab709ccbb5e0e6d4d873ba82fce57d94, type: 3}
   m_Name: PricesIncreaseEventSo
   m_EditorClassIdentifier: Assembly-CSharp::PricesIncreaseEventSo
+  _UIPopup: {fileID: 8837315816500933325, guid: 367b0d2db84e04348817c5171a503f1d, type: 3}
+  _popupDuration: 7
   _amount: 0.25

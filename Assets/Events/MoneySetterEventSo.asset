@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4979dafa233d9b8468352a93ca5f4ac5, type: 3}
   m_Name: MoneySetterEventSo
   m_EditorClassIdentifier: Assembly-CSharp::MoneySetterEventSo
+  _UIPopup: {fileID: 9188706603918776494, guid: 611bf7f92dc19e746acea3822c64ff5a, type: 3}
+  _popupDuration: 7
   _amount: 0

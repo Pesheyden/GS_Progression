@@ -5,6 +5,7 @@ public class ResetFieldEventSo : FieldEventSO
 {
     public override void Activate(PlayerController playerController)
     {
+        base.Activate(playerController);
         playerController.Reset();
     }
 }

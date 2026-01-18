@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd3e6687a3b1e6c40bcd024620e20e84, type: 3}
   m_Name: ResetFieldEventSo
   m_EditorClassIdentifier: Assembly-CSharp::ResetFieldEventSo
+  _UIPopup: {fileID: 4762642589565024392, guid: 3840624cfd74fdd4b96787a3305b1163, type: 3}
+  _popupDuration: 7
